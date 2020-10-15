@@ -1,83 +1,70 @@
 from microbit import *
+import ButtonEvent
 import dispTime
 import TwoLineNumber
 
-###　変数初期化
+###--------------------------------------
+### 変数初期化
 appStatus = 0     #タイマー未動作
 startTime = 0     #開始時間
+setTime = 0
 operatingTime = 0 #稼動時間
 elapsedTime = 0   #経過時間
 blockNumber = 25
 blockSurvivalTime = 30
+updateInterval = 1000   #更新間隔（ミリ秒）
 
 ###--------------------------------------
-###　timerモード　Aボタン押下
-def ButtonCkick_A():
-    global appStatus
+### タイマー処理
+def GetRemainingBlocks():
     global startTime
     global setTime
-    if appStatus == 0 :
-        appStatus = 1
-        #タイマー開始時間に現在の時刻を代入（ミリ秒）
-        #startTime = system_timer_current_time()
-        setTime = blockNumber * blockSurvivalTime * 1000
-        #出力
-        display.scroll("start")
-        s = temperature()
-        #display.scroll(s)
-        startTime = running_time()
-        #display.scroll(startTime)
+    global updateInterval
+    global blockSurvivalTime
 
-###　timerモード　Bボタン押下
-def ButtonCkick_B():
-    global appStatus
-    if appStatus == 1 :
-        appStatus = 2
-        display.scroll("stop")
+    #1秒間隔に調整
+    sleep(updateInterval)
 
-    elif appStatus == 2 :
-        appStatus = 1
-        display.scroll("restart")
-
-###　timerモード　A＋Bボタン押下
-def ButtonCkick_AB():
-    return
-
-###　タイマー処理
-def Timer():
-    sleep(1000)
     keikaTime = running_time() - startTime
-    dispTime = int((setTime - keikaTime) / 1000 /30)
+    dispTime = int((setTime - keikaTime) / updateInterval / blockSurvivalTime)
     return dispTime
 
 ###--------------------------------------
-###　起動時処理
-###　settingファイル読み込み
+### 起動時処理
+### settingファイル読み込み
 
 
 
+###
 
-###　Timerモード開始
 while True:
+    ### Timerモード(通常モード)処理
+
+    #共通処理
+    #残りブロック数取得
+    blocks = GetRemainingBlocks()
+
+    #タイマー未動作状態の場合
+    if appStatus == 0 :
+        #点灯LED表示
+        display.show(dispTime.BlockArrey[blocks])
+
+    #タイマー動作中状態の場合
     if appStatus == 1 :
-        sleep(1000)
-        x = Timer()
-        display.show(dispTime.BlockArrey[x])
+        #点灯LED表示
+        display.show(dispTime.BlockArrey[blocks] - 1)
         #display.show(TwoLineNumber.img(25))
 
-    ### イベント登録
+        #点滅LED表示
+
+    #タイマー一時停止状態の場合
+    if appStatus == 2 :
+        break
+
+    # ボタンイベント登録
     if button_a.is_pressed() and button_b.is_pressed():
         break
     elif button_a.is_pressed():
-        ButtonCkick_A()
-
+        ButtonEvent.ButtonCkick_A(appStatus, blockNumber, blockSurvivalTime)
     elif button_b.is_pressed():
-        ButtonCkick_B()
-
-
-
-
-
-
-###　
-###　
+        ButtonEvent.ButtonCkick_B()
