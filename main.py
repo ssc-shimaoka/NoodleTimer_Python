@@ -17,10 +17,10 @@ updateInterval = 1000   #更新間隔（ミリ秒）
 ###--------------------------------------
 ### タイマー処理
 def GetRemainingBlocks():
-    global startTime
-    global setTime
-    global updateInterval
-    global blockSurvivalTime
+    #global startTime
+    #global setTime
+    #global updateInterval
+    #global blockSurvivalTime
 
     #1秒間隔に調整
     sleep(updateInterval)
