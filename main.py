@@ -9,17 +9,13 @@ startTime = 0     #開始時間
 setTime = 0
 operatingTime = 0 #稼動時間
 elapsedTime = 0   #経過時間
-blockNumber = 2
+blockNumber = 6
 blockSurvivalTime = 30
 updateInterval = 1000   #更新間隔（ミリ秒）
 
 ###--------------------------------------
 ### タイマー処理
 def GetRemainingBlocks():
-
-    #1秒間隔に調整
-    sleep(updateInterval)
-
     keikaTime = running_time() - startTime
     dispTime = int((setTime - keikaTime) / updateInterval / blockSurvivalTime)
     return dispTime
@@ -43,7 +39,7 @@ while True:
         if appStatus == 0 :
             #タイマー開始時間に現在の時刻を代入（ミリ秒）
             startTime = running_time()
-            #タイマー指定時間　設定
+            #タイマー指定時間 設定
             setTime = blockNumber * blockSurvivalTime * updateInterval
             #タイマー状態更新（未動作→動作中）
             appStatus = 1
@@ -56,12 +52,14 @@ while True:
 
 
     ### Timerモード(通常モード)処理
+    #1秒間隔に調整
+    sleep(updateInterval)
 
     #タイマー未動作状態の場合
     if appStatus == 0 :
         #点灯LED表示
         #display.show(dispTime.BlockArrey[blocks])
-        display.show(appStatus)
+        display.show(appStatus) #0
 
     #タイマー動作中状態の場合
     if appStatus == 1 :
@@ -79,15 +77,15 @@ while True:
         #ブロックが残っている場合
         else :
             #点灯LED表示
-            display.show(dispTime.BlockArrey[blocks])
-            #display.show(appStatus)
+            display.show(dispTime.BlockArrey[blocks+1])
 
+            '''
             #点滅LED表示
+            #display.show(blocks)
+            #display.set_pixel(dispTime.LcdArrey[blocks])
+            '''
 
     #タイマー一時停止状態の場合
     if appStatus == 2 :
         break
-
-
-
 

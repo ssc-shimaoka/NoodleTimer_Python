@@ -30,3 +30,14 @@ Block25 = Image("99999:99999:99999:99999:99999")
 BlockArrey = [Block00,Block01,Block02,Block03,Block04,Block05,Block06,Block07,Block08,Block09,
               Block10,Block11,Block12,Block13,Block14,Block15,Block16,Block17,Block18,Block19,
               Block20,Block21,Block22,Block23,Block24,Block25]
+
+'''
+Lcd01 = (0,4)
+Lcd02 = (0,3)
+Lcd03 = (0,2)
+Lcd04 = (0,1)
+Lcd05 = (0,0)
+Lcd06 = (1,4)
+
+LcdArrey = [Lcd01,Lcd02,Lcd03,Lcd04,Lcd05,Lcd06]
+'''
