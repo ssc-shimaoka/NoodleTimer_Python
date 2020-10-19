@@ -4,20 +4,23 @@ import TwoLineNumber
 
 ###--------------------------------------
 ### 変数初期化
-appStatus = 0     #タイマー未動作
-startTime = 0     #開始時間
-setTime = 0
-operatingTime = 0 #稼動時間
-elapsedTime = 0   #経過時間
-blockNumber = 6
-blockSurvivalTime = 30
-updateInterval = 1000   #更新間隔（ミリ秒）
+appMode     = 0         #モード設定[0:手動タイマー、1-3:プリセットタイマー、4:設定モード]
+blockNumber = 6         #ブロック数[1-25]
+blockSurvivalTime = 30  #ブロック生存時間(秒)[1-60]
+temperatureSensor = 40  #温度センサー[30-50]
+
+timerStatus    = 0      #タイマー状態
+setTime        = 0      #設定時間(ミリ秒)
+operatingTime  = 0      #稼動時間(ミリ秒)
+startTime      = 0      #開始時間(ミリ秒)
+elapsedTime    = 0      #経過時間(ミリ秒)
+updateInterval = 1000   #更新間隔(ミリ秒)
 
 ###--------------------------------------
 ### タイマー処理
 def GetRemainingBlocks():
-    keikaTime = running_time() - startTime
-    dispTime = int((setTime - keikaTime) / updateInterval / blockSurvivalTime)
+    elapsedTime = running_time() - startTime
+    dispTime = int((setTime - elapsedTime) / updateInterval / blockSurvivalTime)
     return dispTime
 
 ###--------------------------------------
@@ -59,7 +62,7 @@ while True:
     if appStatus == 0 :
         #点灯LED表示
         #display.show(dispTime.BlockArrey[blocks])
-        display.show(appStatus) #0
+        display.set_pixel(4, 4, 4)
 
     #タイマー動作中状態の場合
     if appStatus == 1 :
@@ -79,6 +82,7 @@ while True:
             #点灯LED表示
             display.show(dispTime.BlockArrey[blocks+1])
 
+
             '''
             #点滅LED表示
             #display.show(blocks)
@@ -88,4 +92,3 @@ while True:
     #タイマー一時停止状態の場合
     if appStatus == 2 :
         break
-
